@@ -1,9 +1,9 @@
 import { Controller, Get, Req, UseGuards } from "@nestjs/common";
 import { GoogleService } from "./google.service";
-import { AuthGuard } from "@nestjs/passport";
+import { GoogleGuard } from "./google.guard";
 
 @Controller('google')
-@UseGuards(AuthGuard('google'))
+@UseGuards(GoogleGuard)
 export class GoogleController {
   constructor(private readonly googleService: GoogleService) {}
 
