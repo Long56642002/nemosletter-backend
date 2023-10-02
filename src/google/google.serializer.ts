@@ -12,7 +12,6 @@ export class GoogleSerializer extends PassportSerializer {
   }
 
   deserializeUser(payload: any, done: Function) {
-    console.log(payload)
     done(null, payload);
   }
 }
