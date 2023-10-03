@@ -10,4 +10,10 @@ export class EmailController {
     var result = await this.emailService.getEmailInformation(req)
     return result
   }
+
+  @Get('list')
+  async getEmailList(@Req() req) {
+    var result = this.emailService.getEmailList(req)
+    return result
+  }
 }
