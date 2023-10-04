@@ -1,9 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { PassportSerializer } from "@nestjs/passport";
+import { GoogleService } from "./google.service";
 
 @Injectable()
 export class GoogleSerializer extends PassportSerializer {
-  constructor() {
+  constructor(private googleService: GoogleService) {
     super();
   }
 
@@ -11,7 +12,8 @@ export class GoogleSerializer extends PassportSerializer {
     done(null, user);
   }
 
-  deserializeUser(payload: any, done: Function) {
-    done(null, payload);
+  async deserializeUser(payload: any, done: Function) {
+    const user = await this.googleService.findUser(payload)
+    user ? done(null, user) : done(null, null);
   }
 }
