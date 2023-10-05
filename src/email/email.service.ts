@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {config} from 'dotenv';
-import { oAuth2Client, googleMail } from './email.constant';
+import { googleMail, oAuth2Client } from 'src/constant';
 
 config();
 
