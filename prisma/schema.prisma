@@ -20,5 +20,7 @@ model User {
   name String?
   picture String?
 
+  userType String @default("standard")
+
   @@map("users")
 }
