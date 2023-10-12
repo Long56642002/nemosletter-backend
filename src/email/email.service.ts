@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import {config} from 'dotenv';
 import { googleMail, oAuth2Client } from 'src/constant';
+import { EmailOptions } from './email_options.type';
+import * as nodemailer from 'nodemailer';
 
 config();
 
@@ -19,5 +21,28 @@ export class EmailService {
     const threads = googleMail.users.threads
     const gmailList = await threads.list({ auth: oAuth2Client, userId: req.user.email })
     return  gmailList.data
+  }
+
+  async sendEmail(req, emailOption: EmailOptions) {
+    try {
+      const accessToken = (await oAuth2Client.getAccessToken()).token
+      const auth : any = {
+        type: 'OAuth2',
+        user: req.user.email,
+        clientId: oAuth2Client._clientId,
+        clientSecret: oAuth2Client._clientSecret,
+        refreshToken: process.env.REFRESH_TOKEN,
+        accessToken: accessToken,
+      }
+      const transport = nodemailer.createTransport({
+        service: 'gmail',
+        auth: auth,
+      })
+      const result = await transport.sendMail({...emailOption, from: req.user.email })
+      return result
+    } catch (error) {
+      console.log(error)
+      return null;
+    }
   }
 }
